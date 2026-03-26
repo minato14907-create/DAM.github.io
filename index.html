@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALO CASE - Valorant Skin Case Opening</title>
+    <meta name="description"
+        content="Open cases and win premium Valorant weapon skins. The ultimate case opening experience.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Tungsten:wght@700&family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo" onclick="navigateTo('home')">
+                <div class="logo-icon">V</div>
+                <span class="logo-text">VALO<span class="accent">CASE</span></span>
+            </div>
+            <div class="nav-links">
+                <a onclick="navigateTo('home')" class="nav-link active" data-page="home">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg>
+                    หน้าหลัก
+                </a>
+                <a onclick="navigateTo('cases')" class="nav-link" data-page="cases">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                    </svg>
+                    เปิดกล่อง
+                </a>
+                <a onclick="navigateTo('inventory')" class="nav-link" data-page="inventory">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                    </svg>
+                    คลังสกิน
+                </a>
+                <a onclick="navigateTo('tradeup')" class="nav-link" data-page="tradeup">
+                    🔄 เทรดอัพ
+                </a>
+                <a onclick="navigateTo('leaderboard')" class="nav-link" data-page="leaderboard">
+                    🏆 อันดับ
+                </a>
+                <a onclick="navigateTo('achievements')" class="nav-link" data-page="achievements">
+                    🎖️ ความสำเร็จ
+                </a>
+                <a onclick="navigateTo('shootingrange')" class="nav-link" data-page="shootingrange">
+                    🎮 ทดสอบสกิน
+                </a>
+                <a onclick="navigateTo('luckywheel')" class="nav-link" data-page="luckywheel">
+                    🎡 วงล้อ
+                </a>
+                <a onclick="navigateTo('admin')" class="nav-link admin-link" data-page="admin" id="adminLink"
+                    style="display:none;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                    แอดมิน
+                </a>
+            </div>
+            <div class="nav-right">
+                <div id="balanceDisplay" class="balance-display" style="display:none;" onclick="showTopupModal()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
+                        <path d="M12 18V6" />
+                    </svg>
+                    <span id="balanceAmount">0</span> VP
+                </div>
+                <div id="authButtons">
+                    <button class="btn btn-outline" onclick="showLoginModal()">เข้าสู่ระบบ</button>
+                    <button class="btn btn-primary" onclick="showRegisterModal()">สมัครสมาชิก</button>
+                </div>
+                <div id="userMenu" style="display:none;">
+                    <div class="user-avatar" onclick="toggleUserDropdown()">
+                        <span id="userInitial">U</span>
+                    </div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="dropdown-header">
+                            <span id="dropdownUsername">User</span>
+                            <span class="dropdown-role" id="dropdownRole">Member</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a onclick="navigateTo('inventory')">📦 คลังสกิน</a>
+                        <a onclick="showTopupModal()">💰 เติมเงิน</a>
+                        <div class="dropdown-divider"></div>
+                        <a onclick="logout()" class="logout-link">🚪 ออกจากระบบ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PAGES -->
+    <main id="mainContent">
+        <!-- HOME PAGE -->
+        <div id="page-home" class="page active">
+            <section class="hero">
+                <div class="hero-bg">
+                    <div class="hero-particles" id="heroParticles"></div>
+                </div>
+                <div class="hero-content">
+                    <div class="hero-badge">🔥 เปิดตัวใหม่ Season 2026</div>
+                    <h1 class="hero-title">
+                        <span class="hero-line1">ลุ้นสกิน</span>
+                        <span class="hero-line2">VALORANT</span>
+                        <span class="hero-line3">ได้ที่นี่</span>
+                    </h1>
+                    <p class="hero-desc">สัมผัสประสบการณ์การเปิดกล่องสกินปืน Valorant สุดหรู พร้อมรูปสกินจริงจากในเกม
+                        ลุ้นรับสกินระดับ Ultra Edition ได้แล้ววันนี้!</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-lg" onclick="navigateTo('cases')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                            </svg>
+                            เปิดกล่องเลย!
+                        </button>
+                        <button class="btn btn-ghost btn-lg" onclick="showRegisterModal()">สมัครฟรี →</button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <span class="stat-number" id="statUsers">12,847</span>
+                            <span class="stat-label">ผู้ใช้งาน</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" id="statOpened">284,591</span>
+                            <span class="stat-label">กล่องที่เปิดแล้ว</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" id="statSkins">500+</span>
+                            <span class="stat-label">สกินในระบบ</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="floating-skins" id="floatingSkins"></div>
+                </div>
+            </section>
+
+            <section class="featured-section">
+                <div class="container">
+                    <h2 class="section-title">🎯 กล่องยอดนิยม</h2>
+                    <div class="featured-cases" id="featuredCases"></div>
+                </div>
+            </section>
+
+            <section class="recent-drops-section">
+                <div class="container">
+                    <h2 class="section-title">🔥 ดรอปล่าสุด</h2>
+                    <div class="drops-ticker" id="dropsTicker"></div>
+                </div>
+            </section>
+
+            <section class="daily-free-section">
+                <div class="container">
+                    <div class="daily-free-card" id="dailyFreeCard">
+                        <div class="daily-free-glow"></div>
+                        <div class="daily-free-info">
+                            <h2>🎁 กล่องฟรีประจำวัน</h2>
+                            <p>เปิดกล่องฟรี 1 ครั้งทุกวัน! ลุ้นรับสกินได้โดยไม่ต้องเสียเงิน</p>
+                            <div class="daily-free-timer" id="dailyFreeTimer"></div>
+                        </div>
+                        <button class="btn btn-primary btn-lg daily-free-btn" id="dailyFreeBtn"
+                            onclick="openDailyFree()">
+                            🎰 เปิดกล่องฟรี!
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- CASES PAGE -->
+        <div id="page-cases" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">เปิดกล่อง</h1>
+                    <p class="page-subtitle">เลือกกล่องที่ต้องการเปิด แล้วลุ้นรับสกินสุดหรู!</p>
+                </div>
+                <div class="cases-grid" id="casesGrid"></div>
+            </div>
+        </div>
+
+        <!-- CASE OPENING PAGE -->
+        <div id="page-opening" class="page">
+            <div class="opening-container">
+                <div class="opening-header">
+                    <h2 id="openingCaseName">Premium Case</h2>
+                    <button class="btn btn-outline btn-sm" onclick="navigateTo('cases')">← กลับ</button>
+                </div>
+                <div class="roulette-wrapper">
+                    <div class="roulette-pointer"></div>
+                    <div class="roulette-track" id="rouletteTrack"></div>
+                </div>
+                <div class="opening-controls">
+                    <button class="btn btn-primary btn-lg open-case-btn" id="openCaseBtn" onclick="startOpening()">
+                        🎰 เปิดกล่อง (<span id="caseCost">100</span> VP)
+                    </button>
+                    <div class="auto-spin-section">
+                        <span class="auto-spin-label">🔄 หมุนเอง (เปิดหลายกล่อง):</span>
+                        <div class="auto-spin-buttons">
+                            <button class="btn btn-outline btn-sm auto-btn" onclick="startAutoSpin(5)">x5</button>
+                            <button class="btn btn-outline btn-sm auto-btn" onclick="startAutoSpin(10)">x10</button>
+                            <button class="btn btn-outline btn-sm auto-btn" onclick="startAutoSpin(25)">x25</button>
+                            <button class="btn btn-outline btn-sm auto-btn" onclick="startAutoSpin(50)">x50</button>
+                        </div>
+                        <div class="auto-spin-cost" id="autoSpinCost"></div>
+                    </div>
+                </div>
+                <div class="case-contents">
+                    <h3>ไอเท็มในกล่อง:</h3>
+                    <div class="contents-grid" id="contentsGrid"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- INVENTORY PAGE -->
+        <div id="page-inventory" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">คลังสกินของฉัน</h1>
+                    <p class="page-subtitle">สกินทั้งหมดที่คุณได้รับจากการเปิดกล่อง</p>
+                </div>
+                <div class="inventory-stats" id="inventoryStats"></div>
+                <div class="inv-toolbar" id="invToolbar" style="display:none;">
+                    <div class="inv-filters">
+                        <select id="invFilterRarity" class="form-input inv-filter-select" onchange="renderInventory()">
+                            <option value="all">ทุกระดับ</option>
+                            <option value="ultra">⭐ Ultra</option>
+                            <option value="exclusive">🔥 Exclusive</option>
+                            <option value="premium">💎 Premium</option>
+                            <option value="deluxe">🟢 Deluxe</option>
+                            <option value="select">🔵 Select</option>
+                        </select>
+                        <select id="invFilterWeapon" class="form-input inv-filter-select" onchange="renderInventory()">
+                            <option value="all">ทุกอาวุธ</option>
+                            <option value="Vandal">Vandal</option>
+                            <option value="Phantom">Phantom</option>
+                            <option value="Operator">Operator</option>
+                            <option value="Sheriff">Sheriff</option>
+                            <option value="Spectre">Spectre</option>
+                            <option value="Guardian">Guardian</option>
+                            <option value="Ghost">Ghost</option>
+                            <option value="Classic">Classic</option>
+                            <option value="Melee">มีด / Melee</option>
+                        </select>
+                        <select id="invSortBy" class="form-input inv-filter-select" onchange="renderInventory()">
+                            <option value="rarity">เรียงตามระดับ</option>
+                            <option value="name">เรียงตามชื่อ</option>
+                            <option value="newest">ใหม่สุด</option>
+                            <option value="value">มูลค่าสูงสุด</option>
+                        </select>
+                    </div>
+                    <div class="inv-bulk-actions">
+                        <button class="btn btn-outline btn-sm" onclick="selectAllInv()">☑️ เลือกทั้งหมด</button>
+                        <button class="btn btn-outline btn-sm" onclick="deselectAllInv()">⬜ ยกเลิกทั้งหมด</button>
+                        <button class="btn btn-primary btn-sm" onclick="sellSelected()">💰 ขายที่เลือก (<span
+                                id="selectedCount">0</span>)</button>
+                        <button class="btn btn-outline btn-sm"
+                            style="border-color:rgba(255,70,85,0.5);color:var(--val-red)"
+                            onclick="sellAllFiltered()">🗑️ ขายทั้งหมดที่กรอง</button>
+                    </div>
+                </div>
+                <div class="inventory-grid" id="inventoryGrid"></div>
+                <div class="empty-state" id="emptyInventory" style="display:none;">
+                    <div class="empty-icon">📦</div>
+                    <h3>ยังไม่มีสกิน</h3>
+                    <p>เปิดกล่องเพื่อรับสกินแรกของคุณ!</p>
+                    <button class="btn btn-primary" onclick="navigateTo('cases')">เปิดกล่องเลย</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TRADE UP PAGE -->
+        <div id="page-tradeup" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">🔄 Trade Up Contract</h1>
+                    <p class="page-subtitle">ใส่สกิน 5 ตัวระดับเดียวกัน แลกเป็นสกินระดับสูงกว่า!</p>
+                </div>
+                <div class="tradeup-container">
+                    <div class="tradeup-tier-info" id="tradeupTierInfo">
+                        <div class="tradeup-from">
+                            <span class="tradeup-tier-label">ใส่สกินระดับ:</span>
+                            <select id="tradeupRarity" class="form-input" onchange="updateTradeupUI()">
+                                <option value="select">🔵 Select → Deluxe</option>
+                                <option value="deluxe">🟢 Deluxe → Premium</option>
+                                <option value="premium">💎 Premium → Exclusive</option>
+                                <option value="exclusive">🔥 Exclusive → Ultra</option>
+                            </select>
+                        </div>
+                        <div class="tradeup-chance" id="tradeupChance">
+                            <span class="tradeup-chance-label">โอกาสสำเร็จ:</span>
+                            <span class="tradeup-chance-value">100%</span>
+                        </div>
+                    </div>
+                    <div class="tradeup-slots" id="tradeupSlots"></div>
+                    <div class="tradeup-arrow">⬇️</div>
+                    <div class="tradeup-result-preview" id="tradeupResultPreview">
+                        <div class="tradeup-result-label">ผลลัพธ์: สกินระดับสูงกว่า 1 ตัว</div>
+                    </div>
+                    <button class="btn btn-primary btn-lg" id="tradeupBtn" onclick="executeTradeUp()" disabled>
+                        🔄 แลกเปลี่ยนเลย! (ต้องใส่ 5 ตัว)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- LEADERBOARD PAGE -->
+        <div id="page-leaderboard" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">🏆 Leaderboard</h1>
+                    <p class="page-subtitle">อันดับผู้เล่นที่มีคลังสกินมูลค่าสูงที่สุด</p>
+                </div>
+                <div class="leaderboard-tabs">
+                    <button class="lb-tab active" onclick="switchLBTab(this, 'value')">💰 มูลค่าคลัง</button>
+                    <button class="lb-tab" onclick="switchLBTab(this, 'count')">📦 จำนวนสกิน</button>
+                    <button class="lb-tab" onclick="switchLBTab(this, 'ultra')">⭐ Ultra ที่มี</button>
+                </div>
+                <div class="leaderboard-list" id="leaderboardList"></div>
+            </div>
+        </div>
+
+        <!-- ACHIEVEMENTS PAGE -->
+        <div id="page-achievements" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">🎖️ ความสำเร็จ</h1>
+                    <p class="page-subtitle">ปลดล็อคความสำเร็จเพื่อรับ VP โบนัส!</p>
+                </div>
+                <div class="achievements-progress" id="achievementsProgress"></div>
+                <div class="achievements-grid" id="achievementsGrid"></div>
+            </div>
+        </div>
+
+        <!-- SHOOTING RANGE PAGE -->
+        <div id="page-shootingrange" class="page">
+            <div class="sr-container">
+                <!-- Weapon Selector Bar -->
+                <div class="sr-weapon-bar" id="srWeaponBar">
+                    <div class="sr-weapon-label">🔫 เลือกสกิน:</div>
+                    <div class="sr-weapon-list" id="srWeaponList"></div>
+                </div>
+
+                <!-- Game Area -->
+                <div class="sr-game-wrapper">
+                    <div class="sr-game-area" id="srGameArea">
+                        <!-- HUD -->
+                        <div class="sr-hud">
+                            <div class="sr-hud-item">
+                                <div class="sr-hud-label">คะแนน</div>
+                                <div class="sr-hud-value" id="srScore">0</div>
+                            </div>
+                            <div class="sr-hud-item">
+                                <div class="sr-hud-label">Combo</div>
+                                <div class="sr-hud-value" id="srCombo">x0</div>
+                            </div>
+                            <div class="sr-hud-item">
+                                <div class="sr-hud-label">แม่นยำ</div>
+                                <div class="sr-hud-value" id="srAccuracy">0%</div>
+                            </div>
+                            <div class="sr-hud-item">
+                                <div class="sr-hud-label">เวลา</div>
+                                <div class="sr-hud-value" id="srTimer">30</div>
+                            </div>
+                        </div>
+
+                        <!-- Game Canvas -->
+                        <canvas id="srCanvas"></canvas>
+
+                        <!-- Crosshair -->
+                        <div class="sr-crosshair" id="srCrosshair"></div>
+
+                        <!-- Equipped Weapon Display -->
+                        <div class="sr-weapon-display" id="srWeaponDisplay">
+                            <img id="srWeaponImg" src="" alt="">
+                            <div class="sr-weapon-name" id="srWeaponName">ไม่ได้เลือกสกิน</div>
+                        </div>
+
+                        <!-- Start Overlay -->
+                        <div class="sr-overlay" id="srStartOverlay">
+                            <h2>🎯 SHOOTING RANGE</h2>
+                            <p>ยิงเป้าให้ได้คะแนนมากที่สุดใน 30 วินาที!</p>
+                            <p style="font-size:13px;color:var(--val-text-dim);margin-top:8px">เลือกสกินจากคลังด้านบน
+                                แล้วกดเริ่ม</p>
+                            <button class="btn btn-primary btn-lg" onclick="startShootingRange()">🎮 เริ่มเกม!</button>
+                        </div>
+
+                        <!-- Game Over Overlay -->
+                        <div class="sr-overlay sr-gameover" id="srGameOver" style="display:none">
+                            <h2>🏁 จบเกม!</h2>
+                            <div class="sr-final-stats" id="srFinalStats"></div>
+                            <div class="sr-reward" id="srReward"></div>
+                            <button class="btn btn-primary btn-lg" onclick="startShootingRange()">🔄
+                                เล่นอีกครั้ง</button>
+                            <button class="btn btn-outline" onclick="showSRStart()">กลับหน้าเริ่ม</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LUCKY WHEEL PAGE -->
+        <div id="page-luckywheel" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">🎡 วงล้อนำโชค</h1>
+                    <p class="page-subtitle">หมุนวงล้อเพื่อลุ้นรับรางวัล VP, สกิน, หรือแม้กระทั่ง x2!</p>
+                </div>
+
+                <div class="lw-layout">
+                    <div class="lw-wheel-section">
+                        <div class="lw-wheel-wrapper">
+                            <div class="lw-pointer">▼</div>
+                            <canvas id="lwCanvas" width="400" height="400"></canvas>
+                        </div>
+                        <button class="btn btn-primary btn-lg lw-spin-btn" id="lwSpinBtn" onclick="spinLuckyWheel()">
+                            🎡 หมุนเลย! (150 VP)
+                        </button>
+                    </div>
+
+                    <div class="lw-prizes-section">
+                        <h3 class="section-title">🏆 รางวัลทั้งหมด</h3>
+                        <div class="lw-prizes-list" id="lwPrizesList"></div>
+                        <div class="lw-result" id="lwResult" style="display:none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADMIN PAGE -->
+        <div id="page-admin" class="page">
+            <div class="container">
+                <div class="page-header">
+                    <h1 class="page-title">🛡️ แผงควบคุมแอดมิน</h1>
+                    <p class="page-subtitle">จัดการระบบและดูสถิติ</p>
+                </div>
+                <div class="admin-grid" id="adminGrid"></div>
+                <div class="admin-users-section">
+                    <h3 class="section-title">👥 รายชื่อผู้ใช้</h3>
+                    <div class="admin-table-wrapper">
+                        <table class="admin-table" id="adminUsersTable">
+                            <thead>
+                                <tr>
+                                    <th>ชื่อผู้ใช้</th>
+                                    <th>ยอดเงิน (VP)</th>
+                                    <th>สกินในคลัง</th>
+                                    <th>สถานะ</th>
+                                    <th>จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminUsersBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="admin-pct-section">
+                    <h3 class="section-title">🔒 ล็อคเปอร์เซ็นต์ดรอป</h3>
+                    <p class="admin-pct-desc">ตั้งค่าเปอร์เซ็นต์โอกาสได้สกินแต่ละระดับ สำหรับแต่ละกล่อง (ต้องรวมเป็น
+                        100%)</p>
+                    <div class="admin-pct-case-select">
+                        <label>เลือกกล่อง:</label>
+                        <select id="adminCaseSelect" class="form-input" onchange="renderAdminPctControls()"></select>
+                    </div>
+                    <div id="adminPctControls"></div>
+                    <div id="adminPctPreview"></div>
+                </div>
+                <div class="admin-drops-section">
+                    <h3 class="section-title">📊 ประวัติดรอปล่าสุด</h3>
+                    <div class="admin-drops-list" id="adminDropsList"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODALS -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-header">
+            <h2>เข้าสู่ระบบ</h2>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>ชื่อผู้ใช้</label>
+                <input type="text" id="loginUsername" placeholder="กรอกชื่อผู้ใช้" class="form-input">
+            </div>
+            <div class="form-group">
+                <label>รหัสผ่าน</label>
+                <input type="password" id="loginPassword" placeholder="กรอกรหัสผ่าน" class="form-input">
+            </div>
+            <div id="loginError" class="form-error"></div>
+            <button class="btn btn-primary btn-full" onclick="login()">เข้าสู่ระบบ</button>
+            <p class="form-footer">ยังไม่มีบัญชี? <a onclick="closeModal();showRegisterModal()">สมัครเลย</a></p>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-header">
+            <h2>สมัครสมาชิก</h2>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label>ชื่อผู้ใช้</label>
+                <input type="text" id="regUsername" placeholder="เลือกชื่อผู้ใช้" class="form-input">
+            </div>
+            <div class="form-group">
+                <label>รหัสผ่าน</label>
+                <input type="password" id="regPassword" placeholder="สร้างรหัสผ่าน" class="form-input">
+            </div>
+            <div class="form-group">
+                <label>ยืนยันรหัสผ่าน</label>
+                <input type="password" id="regConfirm" placeholder="กรอกรหัสผ่านอีกครั้ง" class="form-input">
+            </div>
+            <div id="regError" class="form-error"></div>
+            <button class="btn btn-primary btn-full" onclick="register()">สมัครสมาชิก</button>
+            <p class="form-footer">มีบัญชีแล้ว? <a onclick="closeModal();showLoginModal()">เข้าสู่ระบบ</a></p>
+        </div>
+    </div>
+
+    <!-- Top-up Modal -->
+    <div class="modal" id="topupModal">
+        <div class="modal-header">
+            <h2>💰 เติมเงิน VP</h2>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <p class="topup-balance">ยอดเงินปัจจุบัน: <strong id="topupCurrentBalance">0</strong> VP</p>
+            <div class="topup-options">
+                <button class="topup-card" onclick="topUp(100)">
+                    <span class="topup-amount">100 VP</span>
+                    <span class="topup-price">฿35</span>
+                </button>
+                <button class="topup-card" onclick="topUp(500)">
+                    <span class="topup-amount">500 VP</span>
+                    <span class="topup-price">฿170</span>
+                    <span class="topup-badge">ยอดนิยม</span>
+                </button>
+                <button class="topup-card" onclick="topUp(1000)">
+                    <span class="topup-amount">1,000 VP</span>
+                    <span class="topup-price">฿320</span>
+                </button>
+                <button class="topup-card" onclick="topUp(2500)">
+                    <span class="topup-amount">2,500 VP</span>
+                    <span class="topup-price">฿750</span>
+                    <span class="topup-badge hot">คุ้มสุด!</span>
+                </button>
+                <button class="topup-card" onclick="topUp(5000)">
+                    <span class="topup-amount">5,000 VP</span>
+                    <span class="topup-price">฿1,400</span>
+                </button>
+                <button class="topup-card" onclick="topUp(10000)">
+                    <span class="topup-amount">10,000 VP</span>
+                    <span class="topup-price">฿2,600</span>
+                    <span class="topup-badge hot">💎 VIP</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal payment-modal" id="paymentModal">
+        <div class="modal-header">
+            <h2>💳 ชำระเงิน</h2>
+            <button class="modal-close" onclick="closePayment()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="payment-info" id="paymentInfo"></div>
+            <div class="payment-methods">
+                <h3>เลือกช่องทางชำระ</h3>
+                <div class="payment-method-grid">
+                    <button class="payment-method-btn active" onclick="selectPaymentMethod(this, 'promptpay')">
+                        <span class="pm-icon">🏦</span>
+                        <span class="pm-name">PromptPay</span>
+                    </button>
+                    <button class="payment-method-btn" onclick="selectPaymentMethod(this, 'truewallet')">
+                        <span class="pm-icon">📱</span>
+                        <span class="pm-name">TrueMoney</span>
+                    </button>
+                    <button class="payment-method-btn" onclick="selectPaymentMethod(this, 'credit')">
+                        <span class="pm-icon">💳</span>
+                        <span class="pm-name">บัตรเครดิต</span>
+                    </button>
+                    <button class="payment-method-btn" onclick="selectPaymentMethod(this, 'bank')">
+                        <span class="pm-icon">🧾</span>
+                        <span class="pm-name">โอนบัญชี</span>
+                    </button>
+                </div>
+            </div>
+            <div class="payment-qr-section" id="paymentQrSection">
+                <div class="qr-code" id="qrCode"></div>
+                <p class="qr-label">สแกน QR Code เพื่อชำระเงิน</p>
+                <div class="payment-timer">หมดเวลาใน <span id="paymentTimer">15:00</span> นาที</div>
+            </div>
+            <button class="btn btn-primary btn-full" id="confirmPaymentBtn" onclick="confirmPayment()">✅
+                ยืนยันการชำระเงิน</button>
+        </div>
+    </div>
+
+    <!-- Win Modal -->
+    <div class="modal win-modal" id="winModal">
+        <div class="win-content">
+            <div class="win-glow" id="winGlow"></div>
+            <div class="confetti-container" id="confettiContainer"></div>
+            <div class="win-stars" id="winStars"></div>
+            <h2 class="win-title">🎉 ยินดีด้วย!</h2>
+            <div class="win-item" id="winItem"></div>
+            <div class="win-actions">
+                <button class="btn btn-primary" onclick="closeWinModal()">รับไอเท็ม</button>
+                <button class="btn btn-outline" onclick="closeWinModal();startOpening()">เปิดอีกครั้ง</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Multi-Result Modal -->
+    <div class="modal multi-result-modal" id="multiResultModal">
+        <div class="modal-header">
+            <h2>🎰 ผลเปิดกล่องทั้งหมด</h2>
+            <button class="modal-close" onclick="closeMultiResult()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="multi-summary" id="multiSummary"></div>
+            <div class="multi-results-grid" id="multiResultsGrid"></div>
+            <div class="multi-actions">
+                <button class="btn btn-primary" onclick="closeMultiResult()">รับไอเท็มทั้งหมด</button>
+                <button class="btn btn-outline" onclick="closeMultiResult();navigateTo('inventory')">ดูคลังสกิน</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div class="modal" id="withdrawModal">
+        <div class="modal-header">
+            <h2>ถอนสกิน</h2>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="withdraw-item" id="withdrawItem"></div>
+            <div class="withdraw-options">
+                <button class="btn btn-primary btn-full" onclick="sellSkin()">
+                    💰 ขายเป็น VP (<span id="sellPrice">0</span> VP)
+                </button>
+                <button class="btn btn-outline btn-full" onclick="withdrawSkin()">
+                    📤 ถอนสกิน (จำลอง)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trade Up Result Modal -->
+    <div class="modal tradeup-result-modal" id="tradeupResultModal">
+        <div class="modal-header">
+            <h2>🔄 ผล Trade Up</h2>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="tradeup-modal-result" id="tradeupModalResult"></div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
